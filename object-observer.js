@@ -2,40 +2,47 @@ class ObjectObs {
     constructor () {
         this.type = 'object';
     }
-    // [1,2,3] => [3,2,1]  index [0,2] => [2,0] Object.key의 length같은데 값이 다르다?index change
-    // [1,2,3,4] [1,2,a,3,4]  added    return at next when value is change
-    // [1,2,a,3,4]  [1,2,3,4] remove : return at prev when value is changed
+    showCheckResult (arr1,arr2,result) {
+        let compareResult = arr1.length > arr2.length ? {
+            type : 'removed',
+            removedValue : result
+        } : {
+            type : 'added',
+            addedValue : result
+        };
+        return compareResult;
+    }
     checkEquality (obj1,obj2) {
         const key1 = Object.keys(obj1);
         const key2 = Object.keys(obj2);
-        console.log(obj1,obj2)
+        let result  = [],
+            chagnedValue = [],
+            target = key1.length > key2.length ? obj1 : obj2;
+
         if (Array.isArray(obj1)) {
-            let result  = [];
             if (key1.length === key2.length) {
-                //index변화를 관찰(배열 내에서 두 원소의 위치가 바뀌었는지 확인)
+                //index변화를 관찰(배열 내에서 두 원소의 index가 바뀌었는지 확인)
                 result = key1.map((_,index)=>obj1[index] === obj2[index]);
-                return result.index(false) > -1 ? {type :'Index changed'} : '';
+                return result.indexOf(false) > -1 ? {type :'Index changed'} : '';
             } else {
-                let target = key1.length > key2.length ? obj1 : obj2;
-                let chagnedValue = [];
                 result = target.map((_,index)=>obj1[index] === obj2[index]);
                 chagnedValue = result.map((v,i)=>!v?target[i]:'').filter(v=>v);
-                let compareResult = key1.length > key2.length ? {
-                    type : 'removed',
-                    removedValue : chagnedValue
-                } : {
-                    type : 'added',
-                    addedValue : chagnedValue
-                };
-                return compareResult;
+                return this.showCheckResult(key1,key2,chagnedValue);
             }
         } else {
-
+            if (key1.length === key2.length) {
+                result = key1.map((key)=>obj1[key] === obj2[key]);
+                return result.indexOf(false) > -1 ? {type :'Property changed'} : '';
+            } else {
+                //value값이 서로 다른 key만 모아놓음
+                result = Object.keys(target).filter((key)=>obj1[key] !== obj2[key]);
+                chagnedValue = result.map(v=>target[v]);
+                return this.showCheckResult(key1,key2,chagnedValue);
+            }
         }
     }
     render (...data) {
         let checkResult = this.checkEquality(data[0],data[1]);
-        console.log('final:',checkResult)
         return {
             ...checkResult,
             before : data[0],
@@ -43,8 +50,6 @@ class ObjectObs {
         }
     }
     update (...data) {
-        console.log('data when Object update:',data);
-        // data  = [5,7];
         return this.render(...data);
     }
 }
