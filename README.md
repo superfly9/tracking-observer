@@ -1,6 +1,8 @@
 ## Tracking Observer
 
 ### 클래스의 변수로 전달된 값들을 추적하는 옵저버 시스템 구성
+
+- 시작방법 : npm i  => npm start
 - 구성요소
 - Subject : Observer를 등록/삭제/상태변화를 알려주는 객체, 즉 Observer를 관리하는 객체 
 - State : 상태변화를 인지하고 상태를 업데이트하는 객체, Subject객체를       상속받아온다
