@@ -27,7 +27,16 @@
     - 두 배열이 같은 인덱스에 같은 값을 갖고 있는지 확인
     - 원소가 추가 혹은 삭제된 순간은 두 원소의 값이 달라져서 false를 반환할때의 index를 이용
     - false를 포함하고 있는 인덱스의 원소(기존과 바뀐 원소)의 값들을 반환=>즉, 변수 changedValue가 추가/삭제된 원소들의 배열
+    ```javascript
+    const key1 = Object.keys(obj1);
+    const key2 = Object.keys(obj2);
+    let result  = [],
+        chagnedValue = [],
+        target = key1.length > key2.length ? obj1 : obj2;
+    let result = target.map((_,index)=>obj1[index] === obj2[index]);
+    chagnedValue = result.map((v,i)=>!v?target[i]:'').filter(v=>v);
+```
     
 2. 길이 같을 때
     - 인덱스 변화를 관찰
-    - 같은 키에 대해 array.map을 통해 같은 값을 가지고 있는지를 판단
+    - Array.prototype.map을 통해 기존 객체와 현재 객체가 같은 키에 같은 값을 가지고 있는지를 판단
