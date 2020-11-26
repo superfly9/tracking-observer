@@ -35,8 +35,9 @@
         target = key1.length > key2.length ? obj1 : obj2;
     let result = target.map((_,index)=>obj1[index] === obj2[index]);
     chagnedValue = result.map((v,i)=>!v?target[i]:'').filter(v=>v);
-```
-    
+   ```
+   
+   
 2. 길이 같을 때
     - 인덱스 변화를 관찰
     - Array.prototype.map을 통해 기존 객체와 현재 객체가 같은 키에 같은 값을 가지고 있는지를 판단
